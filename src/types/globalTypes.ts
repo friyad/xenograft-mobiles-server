@@ -1,3 +1,12 @@
+import { Request } from "express";
+
+export interface IUser {
+  name: string;
+  email: string;
+  password: string;
+  refreshToken: string;
+}
+
 export interface SignUpCredentials {
   email: string;
   password: string;
@@ -7,6 +16,10 @@ export interface SignUpCredentials {
 export interface SignInCredentials {
   email: string;
   password: string;
+}
+
+export interface CRequest extends Request {
+  user?: IUser;
 }
 
 export interface ISmartPhone {
