@@ -10,9 +10,9 @@ export const handleSignUP = async (req: Request, res: Response) => {
   const { email, password, name }: SignUpCredentials = req.body;
 
   try {
-    const value = signUpSchema.validate(req.body);
-    if (value.error) {
-      throw new Error(value.error.message);
+    const isValidate = signUpSchema.validate(req.body);
+    if (isValidate.error) {
+      throw new Error(isValidate.error.message);
     }
     const user = await UserModel.findOne({ email: email });
 
