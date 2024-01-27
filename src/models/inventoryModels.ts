@@ -9,8 +9,8 @@ const smartPhoneSchema: Schema = new Schema({
   brand: { type: String, required: true },
   model: { type: String, required: true },
   opSystem: { type: String, required: true },
-  storageCapacityGB: { type: Number, required: true },
-  ram: { type: Number, required: true },
+  storageCapacityGB: { type: [Number], required: true },
+  ram: { type: [Number], required: true },
   processor: { type: String, required: true },
   screenSize: { type: Number, required: true },
   color: { type: String, required: true },
@@ -25,10 +25,10 @@ const smartPhoneSchema: Schema = new Schema({
 
   rating: { type: Number, required: true },
   sells: { type: Number, required: true },
-  isStock: { type: Boolean, required: true },
+  inStock: { type: Boolean, required: true },
 });
 
-const inventorySchema: Schema = new mongoose.Schema({
+export const inventorySchema: Schema = new mongoose.Schema({
   userID: String,
   smartPhones: [smartPhoneSchema],
 });

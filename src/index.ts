@@ -12,6 +12,8 @@ import userRoutes from "./routes/userRoutes";
 // @ts-ignore
 import helmet from "helmet";
 import connectDB from "./config/dbConfig";
+import inventoryRoutes from "./routes/inventoryRoutes";
+import verifyUser from "./middlewares/verifyUser";
 
 const app: Application = express();
 
@@ -31,7 +33,7 @@ connectDB();
 
 // Routes
 app.use("/api/v1", userRoutes);
-// app.use("/api/v1", userRoutes);
+app.use("/api/v1", verifyUser, inventoryRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Don't try to hack me!");
@@ -46,8 +48,9 @@ function errorHandler(
   if (res.headersSent) {
     return next(err);
   }
-  res.status(500);
-  res.render("error", { error: err });
+  res.status(500).json({
+    error: err,
+  });
 }
 
 app.use(errorHandler);

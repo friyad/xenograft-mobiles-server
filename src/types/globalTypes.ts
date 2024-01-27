@@ -1,6 +1,8 @@
 import { Request } from "express";
+import { Types } from "mongoose";
 
 export interface IUser {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
@@ -47,5 +49,5 @@ export interface ISmartPhone {
 
   rating: number;
   sells: number; // How many times this phone sold
-  isStock: boolean;
+  inStock: boolean;
 }
