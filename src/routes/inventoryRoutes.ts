@@ -1,9 +1,15 @@
 import express, { Router } from "express";
-import { getSmartPhones } from "../controllers/inventoriesController";
+import {
+  getSingleSmartPhone,
+  getSmartPhones,
+  postSingleSmartPhone,
+} from "../controllers/inventoriesController";
 
 const inventoryRoutes: Router = express.Router();
 
 inventoryRoutes.get("/smartphones", getSmartPhones);
+inventoryRoutes.get("/smartphone/:id", getSingleSmartPhone);
+inventoryRoutes.post("/smartphone", postSingleSmartPhone);
 
 export default inventoryRoutes;
 
