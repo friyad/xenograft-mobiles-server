@@ -1,4 +1,10 @@
-import express, { Request, Response, Application } from "express";
+import express, {
+  Request,
+  Response,
+  Application,
+  ErrorRequestHandler,
+  NextFunction,
+} from "express";
 import cors from "cors";
 import cookeParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -25,10 +31,26 @@ connectDB();
 
 // Routes
 app.use("/api/v1", userRoutes);
+// app.use("/api/v1", userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Don't try to hack me!");
 });
+
+function errorHandler(
+  err: ErrorRequestHandler,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(500);
+  res.render("error", { error: err });
+}
+
+app.use(errorHandler);
 
 const port: number | string = process.env.PORT || 5000;
 app.listen(port, () => {
