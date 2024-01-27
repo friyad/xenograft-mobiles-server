@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  password: String,
-  refreshToken: String,
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  refreshToken: { type: String, required: true },
 });
 
 export const UserModel = mongoose.model("users", userSchema);

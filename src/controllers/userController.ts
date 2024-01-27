@@ -4,6 +4,7 @@ import { UserModel } from "../models/userModel";
 import { SignUpCredentials, SignInCredentials } from "../types/globalTypes";
 import { signUpSchema, signInSchema } from "../validations/userValidations";
 import bcrypt from "bcrypt";
+import { InventoriesModel } from "../models/inventoryModels";
 
 export const handleSignUP = async (req: Request, res: Response) => {
   const { email, password, name }: SignUpCredentials = req.body;
@@ -36,8 +37,18 @@ export const handleSignUP = async (req: Request, res: Response) => {
 
     // if token genereated successfully
     if (token) {
+      // create an empty inventory for this user
+      const inventory = new InventoriesModel({
+        userID: newUser._id.toString(),
+        smartPhones: [],
+      });
+
+      // update the refreshToken to user data
       newUser.refreshToken = token;
-      await newUser.save(); // save the user to db
+
+      // save the user and user's empty inventory to db at the same time
+      await Promise.all([inventory.save(), newUser.save()]);
+
       res.status(201).json({
         status: true,
         message: "Sign Up Successfull!",
