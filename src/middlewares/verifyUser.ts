@@ -9,7 +9,7 @@ const verifyUser = async (req: CRequest, res: Response, next: NextFunction) => {
   if (!token) {
     res.status(401).json({
       status: false,
-      message: "Unauthorized",
+      message: "Unauthorized, invalid token",
     });
     return;
   }
@@ -20,7 +20,7 @@ const verifyUser = async (req: CRequest, res: Response, next: NextFunction) => {
     const user = await UserModel.findById(result._id);
 
     if (!user) {
-      res.status(401).json({
+      res.status(401).clearCookie("_token").json({
         status: false,
         message: "Unauthorized",
       });
@@ -31,7 +31,7 @@ const verifyUser = async (req: CRequest, res: Response, next: NextFunction) => {
     next();
   } catch (error: unknown) {
     console.log((error as Error).message);
-    res.status(401).json({
+    res.status(401).clearCookie("_token").json({
       status: false,
       message: "Unauthorized",
     });
