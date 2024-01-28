@@ -39,19 +39,19 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Don't try to hack me!");
 });
 
-function errorHandler(
+const errorHandler = (
   err: ErrorRequestHandler,
   req: Request,
   res: Response,
   next: NextFunction
-) {
+) => {
   if (res.headersSent) {
     return next(err);
   }
   res.status(500).json({
     error: err,
   });
-}
+};
 
 app.use(errorHandler);
 
