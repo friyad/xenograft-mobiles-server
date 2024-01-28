@@ -51,3 +51,10 @@ export interface ISmartPhone {
   sells: number; // How many times this phone sold
   inStock: boolean;
 }
+
+export interface ISell {
+  totalQuantity: number;
+  buyerName: string;
+  saleDate: string;
+  product: ISmartPhone;
+}

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const smartPhoneSchema: Schema = new Schema({
+export const smartPhoneSchema: Schema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
