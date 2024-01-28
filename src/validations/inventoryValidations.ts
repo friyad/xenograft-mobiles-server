@@ -26,3 +26,10 @@ export const smartPhoneValidation = Joi.object({
   sells: Joi.number().required(),
   inStock: Joi.boolean().required(),
 });
+
+export const spDeleteValidation = Joi.object({
+  smartphones: Joi.array()
+    .items(Joi.string())
+    .required()
+    .error(new Error("Please provide smartphone Ids")),
+});

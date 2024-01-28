@@ -1,15 +1,21 @@
 import express, { Router } from "express";
 import {
+  deleteSmartPhones,
+  duplicateSmartPhone,
   getSingleSmartPhone,
   getSmartPhones,
   postSingleSmartPhone,
+  updateSingleSmartPhone,
 } from "../controllers/inventoriesController";
 
 const inventoryRoutes: Router = express.Router();
 
 inventoryRoutes.get("/smartphones", getSmartPhones);
 inventoryRoutes.get("/smartphone/:id", getSingleSmartPhone);
+inventoryRoutes.put("/smartphone/:id", updateSingleSmartPhone);
+inventoryRoutes.post("/smartphone/duplicate/:id", duplicateSmartPhone);
 inventoryRoutes.post("/smartphone", postSingleSmartPhone);
+inventoryRoutes.delete("/smartphones", deleteSmartPhones);
 
 export default inventoryRoutes;
 
