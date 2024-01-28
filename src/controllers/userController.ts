@@ -5,6 +5,7 @@ import { SignUpCredentials, SignInCredentials } from "../types/globalTypes";
 import { signUpSchema, signInSchema } from "../validations/userValidations";
 import bcrypt from "bcrypt";
 import { InventoriesModel } from "../models/inventoryModels";
+import { SellsModel } from "../models/sellsModel";
 
 export const handleSignUP = async (req: Request, res: Response) => {
   const { email, password, name }: SignUpCredentials = req.body;
@@ -18,7 +19,7 @@ export const handleSignUP = async (req: Request, res: Response) => {
 
     // If user already exist then return with message
     if (user?.email) {
-      res.status(404).json({
+      res.status(400).json({
         status: false,
         message: "A user already exist with this email",
       });
@@ -38,16 +39,26 @@ export const handleSignUP = async (req: Request, res: Response) => {
     // if token genereated successfully
     if (token) {
       // create an empty inventory for this user
-      const inventory = new InventoriesModel({
+      const inventoryCollection = new InventoriesModel({
         userID: newUser._id.toString(),
         smartPhones: [],
+      });
+
+      // create an empty sells collection for this user
+      const sellsCollection = new SellsModel({
+        userID: newUser._id.toString(),
+        sellsData: [],
       });
 
       // update the refreshToken to user data
       newUser.refreshToken = token;
 
-      // save the user and user's empty inventory to db at the same time
-      await Promise.all([inventory.save(), newUser.save()]);
+      // save the user and user's empty collections to db at the same time
+      await Promise.all([
+        inventoryCollection.save(),
+        sellsCollection.save(),
+        newUser.save(),
+      ]);
 
       res.status(201).json({
         status: true,
@@ -77,7 +88,7 @@ export const handleSignIn = async (req: Request, res: Response) => {
 
     // If NOT registered user
     if (!user?.email) {
-      res.status(404).json({
+      res.status(400).json({
         status: false,
         message: "Incorrect Email or Password",
       });
@@ -87,7 +98,7 @@ export const handleSignIn = async (req: Request, res: Response) => {
     // Compare user's provided password with db hashed password
     const isPassCorrect = await bcrypt.compare(password, user.password!);
     if (!isPassCorrect) {
-      res.status(404).json({
+      res.status(400).json({
         status: false,
         message: "Incorrect Email or Password",
       });
