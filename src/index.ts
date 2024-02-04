@@ -20,14 +20,17 @@ const app: Application = express();
 
 // Middlewares
 app.use(express.json());
-app.use(cookeParser("mySecret"));
+app.use(cookeParser());
 app.use(helmet());
 
 // ENV configuration
 dotenv.config();
 
+const whitelist = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
+  : [];
 // CORS handling
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: whitelist }));
 
 // Connect to DB
 connectDB();
@@ -61,3 +64,5 @@ const port: number | string = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+module.exports = app;
