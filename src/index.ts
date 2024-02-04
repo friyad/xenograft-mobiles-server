@@ -27,7 +27,7 @@ app.use(helmet());
 dotenv.config();
 
 // CORS handling
-app.use(cors({ credentials: true, origin: "*" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 // Connect to DB
 connectDB();

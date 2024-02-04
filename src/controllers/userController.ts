@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { generateToken } from "../helpers/GenerateToken";
 import { UserModel } from "../models/userModel";
-import { SignUpCredentials, SignInCredentials } from "../types/globalTypes";
-import { signUpSchema, signInSchema } from "../validations/userValidations";
+import {
+  SignUpCredentials,
+  SignInCredentials,
+  CRequest,
+} from "../types/globalTypes";
 import bcrypt from "bcrypt";
 import { InventoriesModel } from "../models/inventoryModels";
 import { SellsModel } from "../models/sellsModel";
@@ -11,10 +14,10 @@ export const handleSignUP = async (req: Request, res: Response) => {
   const { email, password, name }: SignUpCredentials = req.body;
 
   try {
-    const isValidate = signUpSchema.validate(req.body);
-    if (isValidate.error) {
-      throw new Error(isValidate.error.message);
-    }
+    // const isValidate = signUpSchema.validate(req.body);
+    // if (isValidate.error) {
+    //   throw new Error(isValidate.error.message);
+    // }
     const user = await UserModel.findOne({ email: email });
 
     // If user already exist then return with message
@@ -80,10 +83,6 @@ export const handleSignIn = async (req: Request, res: Response) => {
   const { email, password }: SignInCredentials = req.body;
 
   try {
-    const value = signInSchema.validate(req.body);
-    if (value.error) {
-      throw new Error(value.error.message);
-    }
     const user = await UserModel.findOne({ email: email });
 
     // If NOT registered user
@@ -115,6 +114,43 @@ export const handleSignIn = async (req: Request, res: Response) => {
     } else {
       throw new Error("Sign In Failed! Please try again later");
     }
+  } catch (error: unknown) {
+    console.log((error as Error).message);
+    res.status(500).json({
+      status: false,
+      message: (error as Error).message,
+    });
+  }
+};
+
+export const getMe = async (req: CRequest, res: Response) => {
+  const user = req.user;
+
+  try {
+    res.status(200).json({
+      status: true,
+      data: {
+        _id: user?._id,
+        email: user?.email,
+        name: user?.name,
+      },
+    });
+  } catch (error: unknown) {
+    console.log((error as Error).message);
+    res.status(500).json({
+      status: false,
+      message: (error as Error).message,
+    });
+  }
+};
+
+export const signOut = async (req: CRequest, res: Response) => {
+  // const user = req.user;
+  try {
+    res.status(200).clearCookie("_token").json({
+      status: false,
+      message: "Sign Out Successfully!",
+    });
   } catch (error: unknown) {
     console.log((error as Error).message);
     res.status(500).json({
