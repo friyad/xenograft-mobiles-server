@@ -1,10 +1,6 @@
 import { Response } from "express";
 import { InventoriesModel } from "../models/inventoryModels";
 import { CRequest } from "../types/globalTypes";
-import {
-  smartPhoneValidation,
-  spDeleteValidation,
-} from "../validations/inventoryValidations";
 
 export const getSmartPhones = async (req: CRequest, res: Response) => {
   const user = req.user;
@@ -69,11 +65,6 @@ export const postSingleSmartPhone = async (req: CRequest, res: Response) => {
   const smartphone = req.body;
 
   try {
-    const isValidte = smartPhoneValidation.validate(req.body);
-    if (isValidte.error) {
-      throw new Error(isValidte.error.message);
-    }
-
     const inventory: any = await InventoriesModel.findOne({
       userID: user!._id,
     });
@@ -106,11 +97,6 @@ export const deleteSmartPhones = async (req: CRequest, res: Response) => {
   const smartphoneIds = req.body.smartphones;
 
   try {
-    const isValidte = spDeleteValidation.validate(req.body);
-    if (isValidte.error) {
-      throw new Error(isValidte.error.message);
-    }
-
     const result: any = await InventoriesModel.updateOne(
       {
         userID: user!._id,
@@ -145,11 +131,6 @@ export const updateSingleSmartPhone = async (req: CRequest, res: Response) => {
   const id = req.params.id;
 
   try {
-    const isValidte = smartPhoneValidation.validate(req.body);
-    if (isValidte.error) {
-      throw new Error(isValidte.error.message);
-    }
-
     const result: any = await InventoriesModel.updateOne(
       {
         userID: user!._id,
@@ -185,10 +166,6 @@ export const duplicateSmartPhone = async (req: CRequest, res: Response) => {
   const eixstId = req.params.id;
 
   try {
-    const isValidte = smartPhoneValidation.validate(req.body);
-    if (isValidte.error) {
-      throw new Error(isValidte.error.message);
-    }
     const inventory: any = await InventoriesModel.findOne({
       userID: user!._id,
     });

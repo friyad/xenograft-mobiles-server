@@ -7,24 +7,49 @@ import {
   postSingleSmartPhone,
   updateSingleSmartPhone,
 } from "../controllers/inventoriesController";
+import validateRequest from "../middlewares/validateRequest";
+import {
+  smartPhoneValidation,
+  spDeleteValidation,
+} from "../validations/inventoryValidations";
 
 const inventoryRoutes: Router = express.Router();
 
 inventoryRoutes.get("/smartphones", getSmartPhones);
 inventoryRoutes.get("/smartphone/:id", getSingleSmartPhone);
-inventoryRoutes.put("/smartphone/:id", updateSingleSmartPhone);
-inventoryRoutes.post("/smartphone/duplicate/:id", duplicateSmartPhone);
-inventoryRoutes.post("/smartphone", postSingleSmartPhone);
-inventoryRoutes.delete("/smartphones", deleteSmartPhones);
+inventoryRoutes.put(
+  "/smartphone/:id",
+  validateRequest(smartPhoneValidation),
+  updateSingleSmartPhone
+);
+inventoryRoutes.post(
+  "/smartphone/duplicate/:id",
+  validateRequest(smartPhoneValidation),
+  duplicateSmartPhone
+);
+inventoryRoutes.post(
+  "/smartphone",
+  validateRequest(smartPhoneValidation),
+  postSingleSmartPhone
+);
+inventoryRoutes.delete(
+  "/smartphones",
+  validateRequest(spDeleteValidation),
+  deleteSmartPhones
+);
 
 export default inventoryRoutes;
 
-const smartphones = [
+export const smartphonesDatas = [
   {
     name: "Samsung Galaxy S20 Ultra",
     price: 999.99,
     quantity: 50,
-    images: ["image1.jpg", "image2.jpg"],
+    images: [
+      "https://i.ibb.co/VpHJHHQ/612-Is-Cbjo5-L-AC-SX679.jpg",
+      "https://i.ibb.co/gjPnXYd/31-Ng-JG-u9-GL-AC-SY741.jpg",
+      "https://i.ibb.co/yNChCTc/51v-QHlx-Mb3-L-AC-SX679.jpg",
+    ],
     releasedDate: new Date("2022-01-01"),
     brand: "Samsung",
     model: "S20 Ultra",
@@ -48,63 +73,15 @@ const smartphones = [
     inStock: true,
   },
   {
-    name: "Smartphone A",
-    price: 699.99,
-    quantity: 100,
-    images: ["image1.jpg", "image2.jpg"],
-    releasedDate: new Date("2022-01-15"),
-    brand: "Samsung",
-    model: "Galaxy S21",
-    opSystem: "Android",
-    storageCapacityGB: [128],
-    ram: [8],
-    processor: "Octa-core (2x2.8 GHz Cortex-A76 & 6x1.8 GHz Cortex-A55)",
-    screenSize: 6.2,
-    color: "Phantom Gray",
-    cellularTechnology: "4G",
-    battery: 4000,
-    simCard: "Nano",
-    camera: [12, 12],
-    charger: 25,
-    usbType: "USB Type-C",
-    aboutThisPhone: "High-performance smartphone with a sleek design.",
-    condition: "New",
-    rating: 4.5,
-    sells: 30,
-    inStock: true,
-  },
-  {
-    name: "Smartphone B",
-    price: 899.99,
-    quantity: 50,
-    images: ["image3.jpg", "image4.jpg"],
-    releasedDate: new Date("2022-02-10"),
-    brand: "Apple",
-    model: "iPhone 13 Pro",
-    opSystem: "iOS",
-    storageCapacityGB: [256],
-    ram: [16],
-    processor: "Hexa-core (2x3.23 GHz Monsoon & 4x1.59 GHz Mistral)",
-    screenSize: 6.1,
-    color: "Midnight Green",
-    cellularTechnology: "5G",
-    battery: 3095,
-    simCard: "Nano",
-    camera: [12, 12, 12],
-    charger: 20,
-    usbType: "Lightning",
-    aboutThisPhone:
-      "Latest iPhone with advanced features and stunning camera capabilities.",
-    condition: "New",
-    rating: 4.8,
-    sells: 20,
-    inStock: true,
-  },
-  {
     name: "Galaxy S20",
     price: 799.99,
     quantity: 50,
-    images: ["image1.jpg", "image2.jpg"],
+    images: [
+      "https://i.ibb.co/f9DhsT6/61-Uv-Osa00-TL-AC-SX679.jpg",
+      "https://i.ibb.co/c8x1PhN/61y-XXlk-U9n-L-AC-SX679.jpg",
+      "https://i.ibb.co/sm99rgG/41c-SFu-DAVAL-AC-SX679.jpg",
+      "https://i.ibb.co/LZm29Z7/61-DWhogl5-AL-AC-SX679.jpg",
+    ],
     releasedDate: new Date("2022-01-01"),
     brand: "Samsung",
     model: "S20",
@@ -131,7 +108,11 @@ const smartphones = [
     name: "iPhone 12",
     price: 899.99,
     quantity: 30,
-    images: ["image3.jpg", "image4.jpg"],
+    images: [
+      "https://i.ibb.co/Vm0V1NQ/51f-YXSn-Su9-L-AC-SY741.jpg",
+      "https://i.ibb.co/3pQs1ft/51d-RIf-Zd-Ps-L-AC-SX679.jpg",
+      "https://i.ibb.co/DGy120V/51q-FTmwn-JUL-AC-SX679.jpg",
+    ],
     releasedDate: new Date("2022-02-15"),
     brand: "Apple",
     model: "12",
@@ -157,7 +138,11 @@ const smartphones = [
     name: "OnePlus 9",
     price: 749.99,
     quantity: 40,
-    images: ["image9.jpg", "image10.jpg"],
+    images: [
+      "https://i.ibb.co/pdwzq6v/81-ZEdt-YBYf-L-AC-SX466.jpg",
+      "https://i.ibb.co/mSNjJcM/71e7z4-Qnqr-L-AC-SY741.jpg",
+      "https://i.ibb.co/D4rJtx0/41t-HEJ-Y0-ML-AC-SY741.jpg",
+    ],
     releasedDate: new Date("2022-03-10"),
     brand: "OnePlus",
     model: "9",
@@ -185,7 +170,11 @@ const smartphones = [
     name: "Google Pixel 5",
     price: 699.99,
     quantity: 25,
-    images: ["image11.jpg", "image12.jpg"],
+    images: [
+      "https://i.ibb.co/XkR0KTg/516wyv8w-YGL-AC-SX679.jpg",
+      "https://i.ibb.co/SJ24f9G/51-Uo-Fh-Zh-m-L-AC-SX679.jpg",
+      "https://i.ibb.co/vxG3THf/31f-Lj6j-U-TL-AC-SX679.jpg",
+    ],
     releasedDate: new Date("2022-04-05"),
     brand: "Google",
     model: "Pixel 5",
@@ -209,3 +198,16 @@ const smartphones = [
     inStock: true,
   },
 ];
+
+/* 
+if (!inventory) {
+      res.status(500).json({
+        status: false,
+        message: "Failed to add your smartphone",
+      });
+      return;
+    }
+    // @ts-ignore
+    inventory.smartPhones.push(smartphonesDatas[2]);
+    await inventory.save();
+ */
