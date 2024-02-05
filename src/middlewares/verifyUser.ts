@@ -5,6 +5,7 @@ import { CRequest } from "../types/globalTypes";
 
 const verifyUser = async (req: CRequest, res: Response, next: NextFunction) => {
   const token = req.cookies._token;
+  console.log(token);
 
   if (!token) {
     res.status(401).json({
