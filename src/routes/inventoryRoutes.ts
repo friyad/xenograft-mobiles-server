@@ -198,16 +198,3 @@ export const smartphonesDatas = [
     inStock: true,
   },
 ];
-
-/* 
-if (!inventory) {
-      res.status(500).json({
-        status: false,
-        message: "Failed to add your smartphone",
-      });
-      return;
-    }
-    // @ts-ignore
-    inventory.smartPhones.push(smartphonesDatas[2]);
-    await inventory.save();
- */
