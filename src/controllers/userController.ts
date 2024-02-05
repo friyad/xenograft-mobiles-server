@@ -147,10 +147,17 @@ export const getMe = async (req: CRequest, res: Response) => {
 export const signOut = async (req: CRequest, res: Response) => {
   // const user = req.user;
   try {
-    res.status(200).clearCookie("_token").json({
-      status: false,
-      message: "Sign Out Successfully!",
-    });
+    res
+      .status(200)
+      .clearCookie("_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      })
+      .json({
+        status: false,
+        message: "Sign Out Successfully!",
+      });
   } catch (error: unknown) {
     console.log((error as Error).message);
     res.status(500).json({

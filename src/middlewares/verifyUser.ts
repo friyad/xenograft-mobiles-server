@@ -20,10 +20,17 @@ const verifyUser = async (req: CRequest, res: Response, next: NextFunction) => {
     const user = await UserModel.findById(result._id);
 
     if (!user) {
-      res.status(401).clearCookie("_token").json({
-        status: false,
-        message: "Unauthorized",
-      });
+      res
+        .status(401)
+        .clearCookie("_token", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        })
+        .json({
+          status: false,
+          message: "Unauthorized",
+        });
       return;
     }
 
@@ -31,10 +38,17 @@ const verifyUser = async (req: CRequest, res: Response, next: NextFunction) => {
     next();
   } catch (error: unknown) {
     console.log((error as Error).message);
-    res.status(401).clearCookie("_token").json({
-      status: false,
-      message: "Unauthorized",
-    });
+    res
+      .status(401)
+      .clearCookie("_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      })
+      .json({
+        status: false,
+        message: "Unauthorized",
+      });
   }
 };
 
