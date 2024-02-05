@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf build && npx tsc",
     "start": "node src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "vercel-build": "echo hello"
   },
   "keywords": [
     "smartphone",
