@@ -17,6 +17,7 @@ export const generateToken = (userID: string, res: Response) => {
     res.cookie("_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
       maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days validity
     });
 
