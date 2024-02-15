@@ -4,7 +4,8 @@
 [Live Server Demo Link](https://xenograft-mobiles-server.vercel.app/)\
 \
 \
-![image](https://github.com/Porgramming-Hero-web-course/l2b2-full-stack-a5-server-side-friyad/assets/86700138/d1023645-23cc-4cdb-850f-22b65eda89d0)
+![Server Home Page](https://github.com/friyad/xenograft-mobiles-server/assets/86700138/6ca4f625-c74e-40f0-882a-60a0ac6bd70d)
+
 
 ## Description
 
